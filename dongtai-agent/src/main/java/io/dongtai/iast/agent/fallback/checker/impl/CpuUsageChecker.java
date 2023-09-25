@@ -13,6 +13,7 @@ import java.util.Properties;
  * @date 2022/3/4
  */
 public class CpuUsageChecker extends BasePerformanceChecker {
+
     @Override
     public boolean isPerformanceOverLimit(PerformanceMetrics nowMetrics, Properties cfg) {
         final PerformanceMetrics thresholdMetrics = getMatchMaxThreshold(nowMetrics.getMetricsKey(), cfg);
@@ -26,4 +27,5 @@ public class CpuUsageChecker extends BasePerformanceChecker {
         }
         return false;
     }
+
 }

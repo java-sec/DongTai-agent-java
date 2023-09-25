@@ -16,8 +16,10 @@ import java.util.Properties;
  * @date 2022/3/4
  */
 public abstract class BasePerformanceChecker implements IPerformanceChecker {
+
     @Override
     public PerformanceMetrics getMatchMaxThreshold(MetricsKey metrics, Properties cfg) {
+        // TODO 2023-9-25 14:59:55 每次都现遍历一遍不累吗，是不是应该提前到一个初始化的阶段？
         final List<PerformanceMetrics> performanceLimitRiskThreshold = FallbackConfig.getPerformanceLimitMaxThreshold(cfg);
         for (PerformanceMetrics riskThreshold : performanceLimitRiskThreshold) {
             if (riskThreshold.getMetricsKey() == metrics) {
@@ -26,4 +28,5 @@ public abstract class BasePerformanceChecker implements IPerformanceChecker {
         }
         return null;
     }
+
 }

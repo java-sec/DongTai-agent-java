@@ -12,6 +12,7 @@ import java.util.Properties;
  * @date 2022/3/3
  */
 public interface IPerformanceChecker {
+
     /**
      * 性能是否达到限制值
      *
@@ -29,4 +30,5 @@ public interface IPerformanceChecker {
      * @return {@link PerformanceMetrics}
      */
     PerformanceMetrics getMatchMaxThreshold(MetricsKey metrics, Properties cfg);
+
 }

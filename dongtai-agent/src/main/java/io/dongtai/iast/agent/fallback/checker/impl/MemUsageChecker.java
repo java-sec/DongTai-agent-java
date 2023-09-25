@@ -13,6 +13,7 @@ import java.util.Properties;
  * @date 2022/3/4
  */
 public class MemUsageChecker extends BasePerformanceChecker {
+
     @Override
     public boolean isPerformanceOverLimit(PerformanceMetrics nowMetrics, Properties cfg) {
         final PerformanceMetrics thresholdMetrics = getMatchMaxThreshold(nowMetrics.getMetricsKey(), cfg);
@@ -33,4 +34,5 @@ public class MemUsageChecker extends BasePerformanceChecker {
         }
         return false;
     }
+
 }
