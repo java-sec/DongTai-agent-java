@@ -32,9 +32,11 @@ public class PerformanceMonitor implements IMonitor {
     // 当前的内存使用率
     private static MemoryUsageMetrics memoryUsage = null;
 
-    private static List<PerformanceMetrics> PERFORMANCE_METRICS = new ArrayList<PerformanceMetrics>();
+    private static List<PerformanceMetrics> performanceMetrics = new ArrayList<PerformanceMetrics>();
 
     private static final String NAME = AgentConstant.THREAD_NAME_PREFIX + "PerformanceMonitor";
+
+    // 需要采集的指标都有哪些，比如cpu、比如memory之类的
     private final List<MetricsKey> needCollectMetrics = new ArrayList<MetricsKey>();
 
     @Override
@@ -42,9 +44,9 @@ public class PerformanceMonitor implements IMonitor {
         return NAME;
     }
 
-    public static void setPerformanceMetrics(List<PerformanceMetrics> performanceMetrics) {
-        PERFORMANCE_METRICS = performanceMetrics;
-    }
+//    public static void setPerformanceMetrics(List<PerformanceMetrics> performanceMetrics) {
+//        PerformanceMonitor.performanceMetrics = performanceMetrics;
+//    }
 
     public PerformanceMonitor() {
         configCollectMetrics();
@@ -86,12 +88,18 @@ public class PerformanceMonitor implements IMonitor {
         return 0;
     }
 
-    public static List<PerformanceMetrics> getPerformanceMetrics() {
-        if (PERFORMANCE_METRICS == null) {
-            PERFORMANCE_METRICS = new ArrayList<PerformanceMetrics>();
-        }
-        return PERFORMANCE_METRICS;
-    }
+//    /**
+//     * 没有被调用的方法，先标记为废弃，下个版本删除
+//     *
+//     * @return
+//     */
+//    @Deprecated
+//    public static List<PerformanceMetrics> getPerformanceMetrics() {
+//        if (performanceMetrics == null) {
+//            performanceMetrics = new ArrayList<PerformanceMetrics>();
+//        }
+//        return performanceMetrics;
+//    }
 
     /**
      * 状态发生转换时，触发engineManager的操作
@@ -122,7 +130,7 @@ public class PerformanceMonitor implements IMonitor {
                 memoryUsage = metrics.getMetricsValue(MemoryUsageMetrics.class);
             }
         }
-        PERFORMANCE_METRICS = performanceMetrics;
+        PerformanceMonitor.performanceMetrics = performanceMetrics;
     }
 
 
