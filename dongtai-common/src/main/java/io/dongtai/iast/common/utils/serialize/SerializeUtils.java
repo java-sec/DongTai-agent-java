@@ -1,5 +1,7 @@
 package io.dongtai.iast.common.utils.serialize;
 
+import io.dongtai.iast.common.exception.DongTaiIastIllegalArgumentException;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ public class SerializeUtils {
 
     private static final String DEFAULT_CHARSET = "ISO-8859-1";
 
+    // 默认允许反序列化的类型，都是内置的一些类型，认为这些类型是安全的
     private static final List<Class<?>> DEFAULT_SAFE_CLASSES = new ArrayList<Class<?>>() {
         private static final long serialVersionUID = -2140605358789870025L;
 
@@ -56,20 +59,35 @@ public class SerializeUtils {
      * 反序列化对象
      */
     public static <T extends Serializable> T deserialize2Object(String str, Class<T> type, List<Class<?>> clazzWhiteList)
-            throws IOException, ClassNotFoundException {
+            throws IOException, ClassNotFoundException, DongTaiIastIllegalArgumentException {
         ObjectInputStream objIn = deserialize(str, clazzWhiteList);
         return type.cast(objIn.readObject());
     }
 
     /**
      * 反序列化列表对象
+     *
+     * @param objectStreamString
+     * @param clazzWhiteList
+     * @param <T>
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws DongTaiIastIllegalArgumentException
      */
-    public static <T extends Serializable> ArrayList<T> deserialize2ArrayList(String str, Class<T> listInnerType, List<Class<?>> clazzWhiteList)
-            throws IOException, ClassNotFoundException {
-        ObjectInputStream objIn = deserialize(str, clazzWhiteList);
+    public static <T extends Serializable> ArrayList<T> deserialize2ArrayList(String objectStreamString, List<Class<?>> clazzWhiteList)
+            throws IOException, ClassNotFoundException, DongTaiIastIllegalArgumentException {
+        ObjectInputStream objIn = deserialize(objectStreamString, clazzWhiteList);
         return new ArrayList<T>().getClass().cast(objIn.readObject());
     }
 
+    /**
+     * 把对象序列化为对象流字符串
+     *
+     * @param obj 要被序列化的对象
+     * @return
+     * @throws IOException
+     */
     private static String serialize(Object obj) throws IOException {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
@@ -77,8 +95,17 @@ public class SerializeUtils {
         return byteOut.toString(DEFAULT_CHARSET);
     }
 
-    private static ObjectInputStream deserialize(String str, List<Class<?>> clazzWhiteList) throws IOException {
-        ByteArrayInputStream byteIn = new ByteArrayInputStream(str.getBytes(DEFAULT_CHARSET));
+    /**
+     * 把 反序列化的对象流字符串反序列化为对象流
+     *
+     * @param objectStreamString 类型反序列化后的对象流字符串
+     * @param clazzWhiteList     允许的类型白名单
+     * @return
+     * @throws IOException
+     * @throws DongTaiIastIllegalArgumentException
+     */
+    private static ObjectInputStream deserialize(String objectStreamString, List<Class<?>> clazzWhiteList) throws IOException, DongTaiIastIllegalArgumentException {
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(objectStreamString.getBytes(DEFAULT_CHARSET));
         List<Class<?>> targetClazzWhiteList = new ArrayList<Class<?>>(clazzWhiteList);
         targetClazzWhiteList.addAll(DEFAULT_SAFE_CLASSES);
         return new DeserializeSafeObjectInputStream(byteIn, targetClazzWhiteList, null);

@@ -1,6 +1,8 @@
 package io.dongtai.iast.common.utils.serialize;
 
 
+import io.dongtai.iast.common.exception.DongTaiIastIllegalArgumentException;
+
 import java.io.*;
 import java.util.List;
 
@@ -11,29 +13,33 @@ import java.util.List;
  * @date 2021/9/22
  */
 public class DeserializeSafeObjectInputStream extends ObjectInputStream {
+
     /**
      * 白名单类型列表
      */
     private final List<Class<?>> targetClazzWhiteList;
+
     /**
-     * 黑名单类名称列表
+     * 类名称前缀黑名单列表
      */
-    private final List<String> targetClazzBlackList;
+    private final List<String> targetClazzPrefixBlackList;
 
     /**
      * 实例化反序列化安全的ObjectInputStream，需要指定黑名单或者白名单
      *
-     * @param in             InputStream
-     * @param clazzWhiteList 类型白名单
-     * @param clazzBlackList 类名前缀黑名单
+     * @param in                   InputStream 对象输入流
+     * @param clazzWhiteList       类型白名单
+     * @param clazzPrefixBlackList 类名前缀黑名单
      * @throws IOException IO异常
      */
-    public DeserializeSafeObjectInputStream(InputStream in, List<Class<?>> clazzWhiteList, List<String> clazzBlackList) throws IOException {
+    public DeserializeSafeObjectInputStream(InputStream in, List<Class<?>> clazzWhiteList, List<String> clazzPrefixBlackList) throws IOException, DongTaiIastIllegalArgumentException {
         super(in);
-        targetClazzWhiteList = clazzWhiteList;
-        targetClazzBlackList = clazzBlackList;
+        this.targetClazzWhiteList = clazzWhiteList;
+        this.targetClazzPrefixBlackList = clazzPrefixBlackList;
         if (isWhiteListEmpty() && isBlackListEmpty()) {
-            throw new IllegalArgumentException("反序列化黑白名单配置错误");
+            // 噢感情您这个名单是必须配置的是吧
+            String msg = this.getClass().getName() + ": The deserialization blacklist and whitelist are configured incorrectly. At least one of the whitelist and the blacklist is configured.";
+            throw new DongTaiIastIllegalArgumentException(msg);
         }
     }
 
@@ -66,12 +72,12 @@ public class DeserializeSafeObjectInputStream extends ObjectInputStream {
             }
         }
         if (!isInWhiteList) {
-            throw new InvalidClassException(desc.getName(), "不安全的反序列化,class类型不合法");
+            throw new InvalidClassException(desc.getName(), "Unsafe deserialization, illegal class type");
         }
     }
 
     /**
-     * 校验类型名称前缀是否在黑名单列表中
+     * 校验类型名称是否在 类名称前缀黑名单 列表中
      *
      * @param desc 反序列化目标类
      * @throws InvalidClassException 类型非法异常
@@ -84,10 +90,10 @@ public class DeserializeSafeObjectInputStream extends ObjectInputStream {
         if (descName == null) {
             return;
         }
-        for (String blackClazz : this.targetClazzBlackList) {
+        for (String blackClazz : this.targetClazzPrefixBlackList) {
             // 检查类型namespace前缀
             if (blackClazz != null && descName.startsWith(blackClazz)) {
-                throw new InvalidClassException(desc.getName(), "不安全的反序列化,class类型不合法!");
+                throw new InvalidClassException(desc.getName(), "Unsafe deserialization, class type is illegal!");
             }
         }
     }
@@ -97,6 +103,7 @@ public class DeserializeSafeObjectInputStream extends ObjectInputStream {
     }
 
     private boolean isBlackListEmpty() {
-        return targetClazzBlackList == null || targetClazzBlackList.isEmpty();
+        return targetClazzPrefixBlackList == null || targetClazzPrefixBlackList.isEmpty();
     }
+
 }
