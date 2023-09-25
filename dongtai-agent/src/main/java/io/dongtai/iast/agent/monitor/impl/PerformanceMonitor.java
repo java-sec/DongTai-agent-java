@@ -26,12 +26,16 @@ import java.util.List;
  * @author dongzhiyong@huoxian.cn
  */
 public class PerformanceMonitor implements IMonitor {
-    private static Integer CPU_USAGE = 0;
-    private static MemoryUsageMetrics MEMORY_USAGE = null;
+
+    // 当前的CPU使用率
+    private static Integer cupUsage = 0;
+
+    // 当前的内存使用率
+    private static MemoryUsageMetrics memoryUsage = null;
+
     private static List<PerformanceMetrics> PERFORMANCE_METRICS = new ArrayList<PerformanceMetrics>();
 
     private static final String NAME = "PerformanceMonitor";
-    private final EngineManager engineManager;
     private final List<MetricsKey> needCollectMetrics = new ArrayList<MetricsKey>();
 
     @Override
@@ -44,7 +48,6 @@ public class PerformanceMonitor implements IMonitor {
     }
 
     public PerformanceMonitor(EngineManager engineManager) {
-        this.engineManager = engineManager;
         configCollectMetrics();
     }
 
@@ -56,14 +59,20 @@ public class PerformanceMonitor implements IMonitor {
         needCollectMetrics.add(MetricsKey.MEM_USAGE);
     }
 
-    public static Integer getCpuUsage() {
-        return CPU_USAGE;
+    public static Integer getCupUsage() {
+        return cupUsage;
     }
 
     public static MemoryUsageMetrics getMemoryUsage() {
-        return MEMORY_USAGE;
+        return memoryUsage;
     }
 
+    /**
+     * 准备废弃这种计算方式 #IAST-454
+     *
+     * @return
+     */
+    @Deprecated
     public static Integer getDiskUsage() {
         try {
             File[] files = File.listRoots();
@@ -109,9 +118,9 @@ public class PerformanceMonitor implements IMonitor {
         for (PerformanceMetrics metrics : performanceMetrics) {
             if (metrics.getMetricsKey() == MetricsKey.CPU_USAGE) {
                 final CpuInfoMetrics cpuInfoMetrics = metrics.getMetricsValue(CpuInfoMetrics.class);
-                CPU_USAGE = cpuInfoMetrics.getCpuUsagePercentage().intValue();
+                cupUsage = cpuInfoMetrics.getCpuUsagePercentage().intValue();
             } else if (metrics.getMetricsKey() == MetricsKey.MEM_USAGE) {
-                MEMORY_USAGE = metrics.getMetricsValue(MemoryUsageMetrics.class);
+                memoryUsage = metrics.getMetricsValue(MemoryUsageMetrics.class);
             }
         }
         PERFORMANCE_METRICS = performanceMetrics;
@@ -163,4 +172,5 @@ public class PerformanceMonitor implements IMonitor {
             DongTaiLog.debug("{} interrupted: {}", getName(), t.getMessage());
         }
     }
+
 }
