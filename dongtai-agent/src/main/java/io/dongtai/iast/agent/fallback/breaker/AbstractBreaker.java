@@ -1,7 +1,5 @@
 package io.dongtai.iast.agent.fallback.breaker;
 
-import io.dongtai.log.DongTaiLog;
-
 import java.util.Properties;
 
 /**
@@ -12,10 +10,10 @@ import java.util.Properties;
  */
 public abstract class AbstractBreaker {
 
-    public static AbstractBreaker newInstance(Properties cfg) {
-        DongTaiLog.info("No suitable breaker,skip create newInstance.");
-        return null;
-    }
+//    public static AbstractBreaker newInstance(Properties cfg) {
+//        DongTaiLog.info("No suitable breaker,skip create newInstance.");
+//        return null;
+//    }
 
     protected AbstractBreaker(Properties cfg) {
         initBreaker(cfg);
@@ -35,4 +33,5 @@ public abstract class AbstractBreaker {
      * @param contextString 上下文字符串
      */
     public abstract void breakCheck(String contextString);
+
 }
