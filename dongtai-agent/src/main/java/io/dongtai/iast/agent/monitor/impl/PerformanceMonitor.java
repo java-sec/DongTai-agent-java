@@ -1,7 +1,6 @@
 package io.dongtai.iast.agent.monitor.impl;
 
 import io.dongtai.iast.agent.fallback.FallbackManager;
-import io.dongtai.iast.agent.manager.EngineManager;
 import io.dongtai.iast.agent.monitor.IMonitor;
 import io.dongtai.iast.agent.monitor.MonitorDaemonThread;
 import io.dongtai.iast.agent.monitor.collector.IPerformanceCollector;
@@ -35,19 +34,19 @@ public class PerformanceMonitor implements IMonitor {
 
     private static List<PerformanceMetrics> PERFORMANCE_METRICS = new ArrayList<PerformanceMetrics>();
 
-    private static final String NAME = "PerformanceMonitor";
+    private static final String NAME = AgentConstant.THREAD_NAME_PREFIX + "PerformanceMonitor";
     private final List<MetricsKey> needCollectMetrics = new ArrayList<MetricsKey>();
 
     @Override
     public String getName() {
-        return AgentConstant.THREAD_NAME_PREFIX + NAME;
+        return NAME;
     }
 
     public static void setPerformanceMetrics(List<PerformanceMetrics> performanceMetrics) {
         PERFORMANCE_METRICS = performanceMetrics;
     }
 
-    public PerformanceMonitor(EngineManager engineManager) {
+    public PerformanceMonitor() {
         configCollectMetrics();
     }
 
