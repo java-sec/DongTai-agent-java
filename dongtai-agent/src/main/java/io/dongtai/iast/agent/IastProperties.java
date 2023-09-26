@@ -9,7 +9,9 @@ import io.dongtai.log.ErrorCode;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author dongzhiyong@huoxian.cn
@@ -67,7 +69,9 @@ public class IastProperties {
     private String customCoreJarUrl;
     private String customSpyJarUrl;
     private String customApiJarUrl;
-    private static String TMP_DIR;
+
+    // 洞态引擎的工作目录
+    private static String workspace;
 
     public static IastProperties getInstance() {
         if (null == instance) {
@@ -82,7 +86,7 @@ public class IastProperties {
 
     private IastProperties() {
         try {
-            propertiesFilePath = getTmpDir() + "iast.properties";
+            propertiesFilePath = getWorkspace() + "iast.properties";
             FileUtils.getResourceToFile("iast.properties", propertiesFilePath);
 
             InputStream is = IastProperties.class.getClassLoader().getResourceAsStream("iast.properties");
@@ -92,10 +96,19 @@ public class IastProperties {
         }
     }
 
-    public static String initTmpDir() {
-        if (TMP_DIR != null && !TMP_DIR.isEmpty()) {
-            return TMP_DIR;
+    /**
+     * 获取workspace
+     *
+     * @return
+     */
+    public String getWorkspace() {
+
+        // 已经初始化过则使用之前的值
+        if (workspace != null && !workspace.isEmpty()) {
+            return workspace;
         }
+
+        // 计算工作目录
         StringBuilder dir = new StringBuilder();
         String sysTmpDir = System.getProperty("java.io.tmpdir");
         if (sysTmpDir == null) {
@@ -105,16 +118,11 @@ public class IastProperties {
                 .append("dongtai-").append(System.getProperty("user.name")).append(File.separator)
                 .append(AgentConstant.VERSION_VALUE).append(File.separator);
 
-        TMP_DIR = dir.toString();
-        System.setProperty("java.io.tmpdir.dongtai", TMP_DIR);
-        return TMP_DIR;
-    }
+        // TODO 在这里需要创建文件夹保证它存在吗？
 
-    public String getTmpDir() {
-        if (TMP_DIR.isEmpty()) {
-            initTmpDir();
-        }
-        return TMP_DIR;
+        workspace = dir.toString();
+        System.setProperty("java.io.tmpdir.dongtai", workspace);
+        return workspace;
     }
 
     public String getPropertiesFilePath() {
@@ -343,4 +351,5 @@ public class IastProperties {
     public <T> T getRemoteFallbackConfig(String configKey, Class<T> valueType, T defaultValue) {
         return getRemoteFallbackConfig(configKey, valueType, defaultValue, null);
     }
+
 }
