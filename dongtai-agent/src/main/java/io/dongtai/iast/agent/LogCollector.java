@@ -93,7 +93,7 @@ public class LogCollector {
      * 启动
      */
     private static void doFluent() {
-        // TODO 不需要判断是否已经启动过了吗？会不会造成同时启动多个实例？比如先卸载，再安装，再卸载，再安装？
+        // 卸载的时候会调用 #stopFluent 停止进程，所以不需要担心重复启动的问题
         String[] execution = {
                 "nohup",
                 fluentFile,
