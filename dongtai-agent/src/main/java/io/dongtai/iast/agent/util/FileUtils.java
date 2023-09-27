@@ -8,7 +8,19 @@ import io.dongtai.log.ErrorCode;
 import java.io.*;
 import java.net.URI;
 
+/**
+ * 文件工具类
+ */
 public class FileUtils {
+
+    /**
+     * 从jar包中抽取资源到指定的路径
+     *
+     * @param resourceName 要抽取的文件在jar中的位置
+     * @param fileName     要解压到的位置
+     * @return 是否抽取成功
+     * @throws IOException
+     */
     public static boolean getResourceToFile(String resourceName, String fileName) throws IOException {
         File targetFile = new File(fileName);
 
@@ -44,6 +56,11 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 渲染配置文件，配置文件中可以使用${name}的方式指定一些变量占位符，然后传给这个方法，此方法会渲染变量的值做实际替换
+     *
+     * @param path 要渲染的配置文件的位置
+     */
     public static void confReplace(String path) {
         String temp = "";
 
@@ -56,11 +73,11 @@ public class FileUtils {
             // 保存该行前面的内容
             while ((temp = br.readLine()) != null) {
                 if (temp.contains("${HOSTNAME_AGENT_ID}")) {
-                    temp = temp.replace("${HOSTNAME_AGENT_ID}", AgentRegisterReport.getInternalHostName() + "-" + AgentRegisterReport.getAgentId().toString());
+                    temp = temp.replace("${HOSTNAME_AGENT_ID}", IastProperties.getInstance().getInternalHostName() + "-" + AgentRegisterReport.getInstance().getAgentIdAsString());
                 } else if (temp.contains("${HOSTNAME}")) {
-                    temp = temp.replace("${HOSTNAME}", AgentRegisterReport.getInternalHostName());
+                    temp = temp.replace("${HOSTNAME}", IastProperties.getInstance().getInternalHostName());
                 } else if (temp.contains("${AGENT_ID}")) {
-                    temp = temp.replace("${AGENT_ID}", AgentRegisterReport.getAgentId().toString());
+                    temp = temp.replace("${AGENT_ID}", AgentRegisterReport.getInstance().getAgentIdAsString());
                 } else if (temp.contains("${OPENAPI}")) {
                     String logAddress = IastProperties.getInstance().getLogAddress();
                     if (null == logAddress || logAddress.isEmpty()) {
@@ -113,4 +130,5 @@ public class FileUtils {
             e.printStackTrace();
         }
     }
+
 }
