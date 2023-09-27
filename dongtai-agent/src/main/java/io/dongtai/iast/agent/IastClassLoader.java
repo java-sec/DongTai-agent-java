@@ -3,7 +3,9 @@ package io.dongtai.iast.agent;
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.jar.JarFile;
@@ -11,8 +13,11 @@ import java.util.jar.JarFile;
 
 /**
  * 代码参考自开源项目jvm-sandbox
+ * <p>
+ * 洞态引擎的类使用这个ClassLoader来加载，卸载的时候才好卸载干净
  *
  * @author dongzhiyong@huoxian.cn
+ * @author CC11001100
  */
 public class IastClassLoader extends URLClassLoader {
 
