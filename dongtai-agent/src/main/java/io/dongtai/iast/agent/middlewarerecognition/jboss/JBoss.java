@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  * JBoss中间件起初以jboss命名，直到JBoss 6，从JBoss7开始，更名为JBoss AS 7
  *
  * @author dongzhiyong@huoxian.cn
+ * @see JBossAS
+ * @see WildFly
  */
 public class JBoss implements IServer {
 
