@@ -2,8 +2,11 @@ package io.dongtai.iast.agent.middlewarerecognition.jetty;
 
 
 import io.dongtai.iast.agent.middlewarerecognition.IServer;
+import io.dongtai.iast.agent.util.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.LineNumberReader;
 import java.lang.management.RuntimeMXBean;
 
 /**
@@ -20,6 +23,8 @@ import java.lang.management.RuntimeMXBean;
  */
 public class Jetty implements IServer {
 
+    public static final String NAME = "Jetty";
+
     @Override
     public boolean isMatch(RuntimeMXBean runtimeMXBean, ClassLoader loader) {
         String classPath = runtimeMXBean.getClassPath();
@@ -29,7 +34,7 @@ public class Jetty implements IServer {
 
     @Override
     public String getName() {
-        return "Jetty";
+        return NAME;
     }
 
     @Override
@@ -37,6 +42,7 @@ public class Jetty implements IServer {
         File versionFile = null;
         FileReader fileReader = null;
         LineNumberReader reader = null;
+        // TODO 2023-9-28 14:56:47 jboss的默认版本号还是*呢，怎么到这里就变成x了啊...
         String version = "x";
         try {
             versionFile = new File(".", "VERSION.txt");
@@ -44,10 +50,11 @@ public class Jetty implements IServer {
             reader = new LineNumberReader(fileReader);
             String temp = reader.readLine();
             version = temp.split(" ")[0];
-            reader.close();
-            fileReader.close();
         } catch (Throwable ignore) {
+        } finally {
+            FileUtils.closeIgnoreException(reader, fileReader);
         }
         return version;
     }
+
 }
