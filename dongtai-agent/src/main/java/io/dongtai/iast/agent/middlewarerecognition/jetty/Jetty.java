@@ -18,6 +18,9 @@ import java.lang.management.RuntimeMXBean;
  * - jetty启动Java命令：org.eclipse.jetty.start.Main /private/var/folders/bz/38vyth2d7_bfrlkvklncp_880000gn/T/contextconfig/contexts-config.xml
  * <p>
  * jetty9 启动
+ * <p>
+ * <p>
+ * TODO 确认单独启动和内嵌启动的方式都能够兼容
  *
  * @author dongzhiyong@huoxian.cn
  */
