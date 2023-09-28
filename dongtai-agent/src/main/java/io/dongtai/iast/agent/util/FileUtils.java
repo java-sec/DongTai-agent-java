@@ -134,15 +134,17 @@ public class FileUtils {
     /**
      * 关闭资源，忽略可能会发生的异常
      *
-     * @param closeable
+     * @param closeables 可变参数，可以一次传递多个Closeable，会按照传参顺序依次关闭
      */
-    public static void closeIgnoreException(Closeable closeable) {
-        if (closeable == null) {
+    public static void closeIgnoreException(Closeable... closeables) {
+        if (closeables == null) {
             return;
         }
-        try {
-            closeable.close();
-        } catch (Throwable ignored) {
+        for (Closeable closeable : closeables) {
+            try {
+                closeable.close();
+            } catch (Throwable ignored) {
+            }
         }
     }
 
