@@ -9,6 +9,8 @@ import java.lang.management.RuntimeMXBean;
  */
 public class DubboService implements IServer {
 
+    public static final String NAME = "Dubbo";
+
     @Override
     public boolean isMatch(RuntimeMXBean paramRuntimeMXBean, ClassLoader loader) {
 
@@ -32,7 +34,7 @@ public class DubboService implements IServer {
 
     @Override
     public String getName() {
-        return "Dubbo";
+        return NAME;
     }
 
     @Override
