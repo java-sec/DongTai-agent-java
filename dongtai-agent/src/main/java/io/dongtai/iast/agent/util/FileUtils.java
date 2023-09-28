@@ -131,4 +131,19 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 关闭资源，忽略可能会发生的异常
+     *
+     * @param closeable
+     */
+    public static void closeIgnoreException(Closeable closeable) {
+        if (closeable == null) {
+            return;
+        }
+        try {
+            closeable.close();
+        } catch (Throwable ignored) {
+        }
+    }
+
 }
