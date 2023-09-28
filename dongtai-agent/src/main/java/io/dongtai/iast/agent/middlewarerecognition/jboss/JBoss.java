@@ -16,6 +16,11 @@ import java.util.regex.Pattern;
  * @author dongzhiyong@huoxian.cn
  */
 public class JBoss implements IServer {
+
+    public static final String NAME = "Jboss";
+
+    private static final Pattern VER_PATTERN = Pattern.compile("<jar name=\"jboss-system.jar\" specVersion=\"(.*?)\"");
+
     /**
      * 检测是否为JBoss中间件
      * - 类路径中存在：bin/run.jar
@@ -33,13 +38,15 @@ public class JBoss implements IServer {
 
     @Override
     public String getName() {
-        return "Jboss";
+        return NAME;
     }
 
     @Override
     public String getVersion() {
+
         // <jar name="jboss-system.jar" specVersion="6.1.0.Final"
         // 读取jar-versions.xml文件，使用正则匹配：<jar name="jboss-system.jar" specVersion="(.*?)"，即可获取版本号
+        // TODO 2023-9-28 14:52:07 如果没有匹配到的话，就是 * 号了，这是否是期望的版本号呢？
         String version = "*";
         File versionFile = new File(".", "jar-versions.xml");
         if (versionFile.exists()) {
@@ -59,5 +66,4 @@ public class JBoss implements IServer {
         return version;
     }
 
-    final static Pattern VER_PATTERN = Pattern.compile("<jar name=\"jboss-system.jar\" specVersion=\"(.*?)\"");
 }
