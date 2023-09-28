@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
  */
 public class JBoss implements IServer {
 
+    // TODO 2023-9-28 14:53:33 这个名字里的b的大小写是否需要纠正过来呢？
     public static final String NAME = "Jboss";
 
     private static final Pattern VER_PATTERN = Pattern.compile("<jar name=\"jboss-system.jar\" specVersion=\"(.*?)\"");
