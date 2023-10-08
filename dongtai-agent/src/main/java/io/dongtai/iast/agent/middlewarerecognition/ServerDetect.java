@@ -68,12 +68,22 @@ public class ServerDetect {
             }
         }
 
+        // 可能不是web服务或者已经支持的服务类型，这个是正常的，所以这里只打一个info级别的日志提示
+        DongTaiLog.info("middleware recognition not found any service");
+
         return null;
     }
 
+    /**
+     * 获取当前应用启动目录的绝对路径
+     *
+     * @return
+     */
     public static String getWebServerPath() {
         File file = new File(".");
         String path = file.getAbsolutePath();
-        return path.substring(0, path.length() - 2);
+        // 带目录分隔符后缀，以便能够一眼看出这是一个目录
+        return path.substring(0, path.length() - 1);
     }
+
 }
