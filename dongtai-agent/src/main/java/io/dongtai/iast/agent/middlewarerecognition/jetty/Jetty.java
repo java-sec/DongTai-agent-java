@@ -23,6 +23,7 @@ import java.lang.management.RuntimeMXBean;
  * TODO 确认单独启动和内嵌启动的方式都能够兼容
  *
  * @author dongzhiyong@huoxian.cn
+ * @author CC11001100
  */
 public class Jetty implements IServer {
 

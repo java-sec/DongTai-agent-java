@@ -6,13 +6,14 @@ import java.lang.management.RuntimeMXBean;
 
 /**
  * @author dongzhiyong@huoxian.cn
+ * @author CC11001100
  */
 public class ServletService implements IServer {
 
     public static final String NAME = "Servlet";
 
     @Override
-    public boolean isMatch(RuntimeMXBean paramRuntimeMXBean, ClassLoader loader) {
+    public boolean isMatch(RuntimeMXBean runtimeMXBean, ClassLoader loader) {
 
         try {
             loader.loadClass(" javax.servlet.ServletRequest".substring(1));
@@ -21,7 +22,7 @@ public class ServletService implements IServer {
         }
 
         try {
-            // tomcat 10之后的Servlet改为了这个
+            // tomcat 10之后的Servlet改为了这个包
             loader.loadClass(" jakarta.servlet.ServletRequest".substring(1));
             return true;
         } catch (Throwable ignore) {
@@ -37,7 +38,8 @@ public class ServletService implements IServer {
 
     @Override
     public String getVersion() {
-        // TODO 2023-9-28 14:31:56 为什么其它的实现没有版本的时候返回的是null这里返回的却是空字符串？是不是有什么特殊原因
-        return "";
+        // TODO 2023-10-8 11:45:14 是否有必要区分Servlet的不同版本呢？
+        return null;
     }
+
 }
