@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 
 /**
  * 用于把对象格式化为字符串
+ * <p>
+ * TODO 2023-10-8 16:08:01 格式化的时候应该考虑污点range，应该在控制资源占用的前提下尽可能提升污点tag的可读性
  *
  * @author CC11001100
  * @since 1.13.2
@@ -19,7 +21,7 @@ public class ObjectFormatter {
      *
      * @param value     要转换为字符串的对象
      * @param charLimit 转换时的字符长度限制，超过此长度将被格式化为一个祖传下来的表示字符串省略的格式 :)
-     * @return 比如"aaa"，如果超长可能会发生省略： "aaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaa"
+     * @return
      * @see ObjectFormatResult
      */
     public static ObjectFormatResult formatObject(Object value, int charLimit) {
