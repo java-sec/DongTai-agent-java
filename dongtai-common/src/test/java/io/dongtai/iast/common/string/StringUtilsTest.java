@@ -1,12 +1,17 @@
 package io.dongtai.iast.common.string;
 
-import io.dongtai.iast.common.string.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * 测试StringUtil中的方法
+ *
+ * @see StringUtils
+ */
 public class StringUtilsTest {
+
     @Test
-    public void normalize() {
+    public void testNormalize() {
         int maxLength = 1024;
         String str;
         String nStr;
@@ -28,15 +33,54 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void formatClassNameToDotDelimiter() {
+    public void testFormatClassNameToDotDelimiter() {
         String s = StringUtils.formatClassNameToDotDelimiter("com/foo/bar");
         Assert.assertEquals("com.foo.bar", s);
     }
 
     @Test
-    public void formatClassNameToSlashDelimiter() {
+    public void testFormatClassNameToSlashDelimiter() {
         String s = StringUtils.formatClassNameToSlashDelimiter("com.foo.bar");
         Assert.assertEquals("com/foo/bar", s);
+    }
+
+    @Test
+    public void isEmpty() {
+        Assert.assertFalse(StringUtils.isEmpty("a"));
+        Assert.assertFalse(StringUtils.isEmpty(" ."));
+        Assert.assertFalse(StringUtils.isEmpty(". "));
+
+        Assert.assertTrue(StringUtils.isEmpty(""));
+        Assert.assertFalse(StringUtils.isEmpty(" "));
+        Assert.assertFalse(StringUtils.isEmpty("  "));
+    }
+
+    @Test
+    public void isBlank() {
+        Assert.assertFalse(StringUtils.isBlank("a"));
+        Assert.assertFalse(StringUtils.isBlank(" ."));
+        Assert.assertFalse(StringUtils.isBlank(". "));
+
+        Assert.assertTrue(StringUtils.isBlank(""));
+        Assert.assertTrue(StringUtils.isBlank(" "));
+        Assert.assertTrue(StringUtils.isBlank("  "));
+    }
+
+    @Test
+    public void isNotBlank() {
+        Assert.assertTrue(StringUtils.isNotBlank("a"));
+        Assert.assertTrue(StringUtils.isNotBlank(" ."));
+        Assert.assertTrue(StringUtils.isNotBlank(". "));
+
+        Assert.assertFalse(StringUtils.isNotBlank(""));
+        Assert.assertFalse(StringUtils.isNotBlank(" "));
+        Assert.assertFalse(StringUtils.isNotBlank("  "));
+    }
+
+    @Test
+    public void replaceChar() {
+        String s = StringUtils.replaceChar("gggggggggggggggggg", 'g', 'j');
+        Assert.assertEquals("jjjjjjjjjjjjjjjjjj", s);
     }
 
 }

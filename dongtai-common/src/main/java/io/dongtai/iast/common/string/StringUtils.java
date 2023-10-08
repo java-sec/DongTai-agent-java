@@ -1,41 +1,55 @@
 package io.dongtai.iast.common.string;
 
 /**
+ * 字符串相关的工具类
+ *
  * @author dongzhiyong@huoxian.cn
+ * @author CC11001100
  */
 public class StringUtils {
 
-    public static boolean match(String source, String target) {
-        // 完全匹配
-        return fullMatch(source, target);
-    }
+    // TODO 未调用方法，疑似废弃，暂时注释掉，后续版本删除
+//    public static boolean match(String source, String target) {
+//        // 完全匹配
+//        return fullMatch(source, target);
+//    }
 
-    public static int[] convertStringToIntArray(String string) {
-        if (string.startsWith("P")) {
-            string = string.substring(1);
-        }
+    // TODO 未调用方法，疑似废弃，暂时注释掉，后续版本删除
+//    public static int[] convertStringToIntArray(String string) {
+//
+//        // TODO 谜之操作，估计是为了解析策略里的参数位置下标吧？
+//        if (string.startsWith("P")) {
+//            string = string.substring(1);
+//        }
+//
+//        String[] positions = string.split(",");
+//        int[] intPositions = new int[positions.length];
+//        int index = 0;
+//        for (String pos : positions) {
+//            intPositions[index++] = Integer.parseInt(pos) - 1;
+//        }
+//        return intPositions;
+//    }
 
-        String[] positions = string.split(",");
-        int[] intPositions = new int[positions.length];
-        int index = 0;
-        for (String pos : positions) {
-            intPositions[index++] = Integer.parseInt(pos) - 1;
-        }
-        return intPositions;
-    }
+    // TODO 未调用方法，疑似废弃，暂时注释掉，后续版本删除
+//    private static boolean fullMatch(String source, String target) {
+//        return source == target;
+//    }
 
-    private static boolean fullMatch(String source, String target) {
-        return source == target;
-    }
-
+    /**
+     * 判断字符串是否为空字符串，空字符串即长度为0的字符串
+     *
+     * @param str
+     * @return
+     */
     public static boolean isEmpty(String str) {
-        return str == null || str.length() == 0;
+        return str == null || str.isEmpty();
     }
 
     /**
      * 判断字符串是否为空白字符串，比如 "  " 会被认为是空白字符串
      *
-     * @param s
+     * @param s 要判断的字符串
      * @return
      * @since 1.13.2
      */
@@ -43,6 +57,25 @@ public class StringUtils {
         return s == null || s.trim().isEmpty();
     }
 
+    /**
+     * 判断字符串不是空白字符串
+     *
+     * @param s
+     * @return
+     */
+    public static boolean isNotBlank(String s) {
+        return !isBlank(s);
+    }
+
+    /**
+     * 对字符串进行格式化
+     *
+     * @param str       要格式化的字符串
+     * @param maxLength 格式化后的长度限制，保证return的字符串的长度小于等于给定的长度限制
+     * @return 返回格式化后的字符串，此字符串的长度小于等于 maxLength
+     * @see ObjectFormatter
+     * @see ObjectFormatResult
+     */
     public static String normalize(String str, int maxLength) {
         int max = Math.max(maxLength, 5);
         if (str != null && str.length() != 0 && str.length() > max) {
