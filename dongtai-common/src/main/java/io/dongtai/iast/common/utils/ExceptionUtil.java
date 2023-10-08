@@ -13,6 +13,8 @@ public class ExceptionUtil {
 
     /**
      * 把printStackTrace会打印的内容以字符串的形式返回
+     * <p>
+     * TODO 注意这个方法在高频调用的时候性能会有问题，可能会导致CPU占用过高，此问题暂无比较好的解决方案，还在内部讨论中...
      *
      * @param e
      * @return
