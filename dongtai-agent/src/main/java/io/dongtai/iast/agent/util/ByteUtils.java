@@ -2,10 +2,14 @@ package io.dongtai.iast.agent.util;
 
 /**
  * 字节转换工具
+ * <p>
+ * <p>
+ * TODO 此工具类暂未用到
  *
  * @author ThinkGem
  * @version 2015-6-20
  */
+@Deprecated
 public class ByteUtils {
 
     private static final int UNIT = 1024;
