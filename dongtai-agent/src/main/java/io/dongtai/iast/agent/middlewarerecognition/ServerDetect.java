@@ -27,7 +27,7 @@ public class ServerDetect {
 
     // 注意，此处的注册顺序最好是要跟常见程序对应的，这样匹配的时候效率会高一些
     // 这里的顺序不要随意调整，因为匹配原理可能会导致调整之后反而识别错误，现在这样也能凑活着工作反正...
-    private static IServer[] servers = {
+    private static final IServer[] servers = {
             new Tomcat(),
             new TomcatV9(),
             new TomcatV8(),
