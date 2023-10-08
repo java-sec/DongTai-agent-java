@@ -3,6 +3,10 @@ package io.dongtai.iast.common.utils.version;
 import java.util.Properties;
 
 /**
+ * 从arthas拷贝过来的工具类
+ *
+ * <a href="https://github.com/alibaba/arthas/blob/8d9af06592b2a43dbcfb5bc51ecfdb57eb69027c/common/src/main/java/com/taobao/arthas/common/JavaVersionUtils.java#L10">...</a>
+ *
  * @author hengyunabc 2018-11-21
  */
 public class JavaVersionUtils {
